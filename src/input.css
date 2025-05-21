@@ -1,0 +1,28 @@
+/* Google Font */
+@import url("https://fonts.googleapis.com/css2?family=Lora:wght@400..700&family=Playfair+Display:wght@700&family=Roboto:wght@100..900&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  --font-Playfair: "Playfair Display", serif;
+  --font-Roboto: "Roboto", sans-serif;
+  --font-Lora: "Lora", serif;
+  --color-CreamyWhite: #fff8e1;
+  --color-GoldenYellow: #ffd700;
+  --color-Charcoal: #333333;
+  --color-Charcoal-Hover: #555555;
+  --color-LightGray: #777777;
+  --color-TomatoRed: #ff6347;
+  --color-TomatoRed-Hover: #ff4500;
+  --color-LimeGreen: #32cd32;
+  --color-LimeGreen-Hover: #228b22;
+  --color-SoftBrown: #8b4513;
+}
+
+body {
+  @apply bg-CreamyWhite;
+}
+
+@utility hover-effect {
+  transition: all 300ms ease-in-out;
+}

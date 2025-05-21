@@ -1,0 +1,24 @@
+{
+  "name": "abs_recipes",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npx @tailwindcss/cli -i ./src/input.css -o ./dist/style.css",
+    "watch": "npx @tailwindcss/cli -i ./src/input.css -o ./dist/style.css --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/agwebryanmuna/ABs-Recipes.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/agwebryanmuna/ABs-Recipes/issues"
+  },
+  "homepage": "https://github.com/agwebryanmuna/ABs-Recipes#readme",
+  "description": "",
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.7",
+    "tailwindcss": "^4.1.7"
+  }
+}
