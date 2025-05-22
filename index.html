@@ -3,10 +3,216 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+      integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="./dist/style.css" />
     <title>AB's Recipes</title>
   </head>
   <body>
-    <h1 class="text-4xl font-Playfair">Coming soon...</h1>
+    <!-- Navbar start -->
+    <navbar class="fixed w-full h-10 bg-TomatoRed flex items-center">
+      <div class="wrapper flex items-center justify-end gap-7">
+        <a href="#" class="hover:font-bold text-LimeGreen hover-effect"
+          >Recipes</a
+        >
+        <div
+          class="flex items-center gap-2 cursor-pointer hover:font-bold text-LimeGreen hover-effect"
+        >
+          <!-- <i class="fa-regular fa-star"></i> -->
+          <i class="relative fa-solid fa-star text-xl text-GoldenYellow">
+            <span
+              class="fav-count hidden absolute top-[50%] left-[50%] translate-y-[-5px] translate-x-[-5px] text-[0.625rem] text-Charcoal"
+              >10</span
+            ></i
+          >Favorites
+        </div>
+      </div>
+    </navbar>
+    <!-- Navbar start -->
+
+    <!-- Hero sta rt -->
+
+    <header class="h-[20rem]">
+      <div
+        class="w-full md:w-[min(93%,800px)] md:mx-auto h-full bg-[url('../images/hero.jpg')] bg-cover flex items-center justify-center"
+      >
+        <div
+          class="flex flex-col gap-5 text-center bg-white/70 rounded-md p-4 sm:p-6 md:p-10"
+        >
+          <h1 class="text-Charcoal text-5xl uppercase font-bold font-Playfair">
+            AB's_<span class="text-SoftBrown">Recipes</span>
+          </h1>
+          <p class="font-bold text-Charcoal font-Lora">
+            Search over 100+ Recipes and ingredients.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <!-- Hero end -->
+
+    <!-- search area start -->
+
+    <section class="my-15">
+      <div class="wrapper flex flex-col gap-5">
+        <div
+          class="flex md:w-lg md:mx-auto items-center rounded-md overflow-hidden border border-SoftBrown has-focus-within:border-GoldenYellow"
+        >
+          <input
+            type="text"
+            placeholder="Search for a recipe by name or first letter"
+            id="search-input"
+            class="w-full peer h-10 px-3 focus:outline-none focus:border-LimeGreen"
+          />
+          <select
+            name="search-type"
+            id="search-type"
+            class="h-10 border-l border-SoftBrown peer-focus:border-LimeGreen focus:outline-none focus:border-LimeGreen"
+          >
+            <option value="name">Name</option>
+            <option value="first-letter">First Letter</option>
+          </select>
+          <button
+            class="h-10 px-5 bg-TomatoRed cursor-pointer text-white font-bold hover:bg-TomatoRed-Hover border border-TomatoRed hover-effect"
+          >
+            Search
+          </button>
+        </div>
+
+        <div class="flex gap-1 mx-auto">
+          <select
+            name="categories"
+            id="categories"
+            class="h-10 border rounded-md px-3 active:outline-0 border-SoftBrown focus:outline-0 focus:border-LimeGreen"
+          >
+            <option value="chicken">Chicken</option>
+            <option value="steak">Steak</option>
+          </select>
+          <select
+            name="areas"
+            id="areas"
+            class="h-10 border rounded-md px-3 active:outline-0 border-SoftBrown focus:outline-0 focus:border-LimeGreen"
+          >
+            <option value="Italy">Italy</option>
+            <option value="America">America</option>
+          </select>
+        </div>
+        <h3 class="text-center text-2xl">
+          Looking for recipes? Search by any of the filters above
+        </h3>
+      </div>
+    </section>
+    <!-- search area end -->
+
+    <!-- main blog start -->
+    <main class="recipes">
+      <div class="wrapper">
+        <!-- Recipes in form of blog -->
+        <div class="grid grid-cols-1 lg:grid-cols-[1fr_260px] gap-5">
+          <div class="recipes-container flex flex-col gap-8">
+            <div class="recipe-card">
+              <div class="recipe-image">
+                <img
+                  class="w-full h-[260px] object-cover"
+                  src="https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg"
+                  alt="Recipe 1"
+                />
+              </div>
+              <div class="recipe-content mt-5">
+                <h2>
+                  <a class="recipe-title text-3xl font-Lora" href="#"
+                    >Spicy Arrabiata Penne</a
+                  >
+                </h2>
+                <p
+                  class="recipe-desc line-clamp-4 mt-4 text-LightGray text-justify"
+                >
+                  Add kosher salt to the boiling water, then add the pasta. Cook
+                  according to the package instructions, about 9 minutes.\r\nIn
+                  a large skillet over medium-high heat, add the olive oil and
+                  heat until the oil starts to shimmer. Add the garlic and cook,
+                  stirring, until fragrant, 1 to 2 minutes. Add the chopped
+                  tomatoes, red chile flakes, Italian seasoning and salt and
+                  pepper to taste. Bring to a boil and cook for 5 minutes.
+                  Remove from the heat and add the chopped basil.\r\nDrain the
+                  pasta and add it to the sauce. Garnish with
+                  Parmigiano-Reggiano flakes and more basil and serve warm.
+                </p>
+                <div class="flex justify-between items-center mt-3">
+                  <a
+                    href="#"
+                    class="learn-more text text-TomatoRed hover:text-TomatoRed-Hover hover-effect"
+                    >Learn More</a
+                  >
+                  <button
+                    class="add-favorite bg-SoftBrown text-white rounded-full py-2 px-4 text-xs hover:bg-SoftBrown/90 hover-effect cursor-pointer"
+                  >
+                    Add to Favorites
+                  </button>
+                </div>
+              </div>
+            </div>
+            <button
+              class="text-SoftBrown font-bold hover:text-SoftBrown/60 hover-effect cursor-pointer"
+            >
+              Load more recipes
+            </button>
+          </div>
+          <!-- recipe container end -->
+          <div class="hidden lg:block side-bar w-[260px]">
+            <h2>Search recipes in your location</h2>
+            <div class="flex flex-col gap-4 mt-2">
+              <div class="recipe-card">
+                <div class="recipe-image">
+                  <img
+                    class="w-full h-[150px] object-cover"
+                    src="https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg"
+                    alt="Recipe 1"
+                  />
+                </div>
+                <div class="recipe-content mt-1">
+                  <h2>
+                    <a class="recipe-title text-xl font-Lora" href="#"
+                      >Spicy Arrabiata Penne</a
+                    >
+                  </h2>
+                  <p
+                    class="recipe-desc line-clamp-1 mt-1 text-LightGray text-justify"
+                  >
+                    Add kosher salt to the boiling water, then add the pasta.
+                    Cook according to the package instructions, about 9
+                    minutes.\r\nIn a large skillet over medium-high heat, add
+                    the olive oil and heat until the oil starts to shimmer. Add
+                    the garlic and cook, stirring, until fragrant, 1 to 2 warm.
+                  </p>
+                  <div class="mt-1">
+                    <a
+                      href="#"
+                      class="learn-more text text-TomatoRed hover:text-TomatoRed-Hover hover-effect"
+                      >Learn More</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- main blog end -->
+
+    <!-- footer -->
+    <footer class="bg-SoftBrown text-white py-4 mt-10">
+      <div class="container mx-auto text-center">
+        <p>&copy; 2023 AB's Recipes. All rights reserved.</p>
+      </div>
+    </footer>
+    <!-- footer end -->
   </body>
 </html>

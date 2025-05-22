@@ -20,9 +20,14 @@
 }
 
 body {
-  @apply bg-CreamyWhite;
+  @apply bg-CreamyWhite font-Roboto text-Charcoal;
 }
 
 @utility hover-effect {
   transition: all 300ms ease-in-out;
+}
+
+.wrapper {
+  width: min(93%, 800px);
+  margin: 0 auto;
 }
