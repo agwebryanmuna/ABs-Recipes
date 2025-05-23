@@ -27,17 +27,18 @@ const LETTERS = [
 // Elements
 const input = document.querySelector("#search-input");
 const searchType = document.querySelector("#search-type");
-const searchBtn = document.querySelector("#search-btn");
+const searchBtn = document.querySelector(".search-btn");
 const searchCategories = document.querySelector("#search-categories");
 const searchAreas = document.querySelector("#search-areas");
 const recipesContainer = document.querySelector(".recipes-container");
 const loadMoreBtn = document.querySelector("#load-more-btn");
-const suggestionHeader = document.querySelector(".suggestion-header");
+const suggestionsContainer = document.querySelector(".suggestions-container");
 const preLoader = document.querySelector(".pre-loader");
 
 const pages = ["recipes", "favorites", "recipe"];
 const currentPage = [pages[0]];
 let recipes = [];
+let suggestedRecipes = [];
 const randomLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
 
 class Recipe {
@@ -86,11 +87,29 @@ class Recipe {
 class UI {
   static updateDOM(_recipes) {
     let recipesInDOM = "";
-    _recipes.forEach((recipe) => {
+    let newRecipes = [..._recipes];
+    if (_recipes.length >= 5) {
+      newRecipes = _recipes.slice(0, 6);
+    }
+    newRecipes.forEach((recipe) => {
       recipesInDOM += this.formatRecipesDOM(recipe);
     });
     preLoader.classList.add("hidden");
     recipesContainer.innerHTML = recipesInDOM;
+  }
+
+  // Change later - DRY
+  static updateDOM2(_recipes) {
+    let recipesInDOM = "";
+    let newRecipes = [..._recipes];
+    if (_recipes.length >= 5) {
+      newRecipes = _recipes.slice(0, 6);
+    }
+    newRecipes.forEach((recipe) => {
+      recipesInDOM += this.formatSuggestedRecipesDOM(recipe);
+    });
+    preLoader.classList.add("hidden");
+    suggestionsContainer.innerHTML = recipesInDOM;
   }
 
   static formatRecipesDOM(recipe) {
@@ -98,6 +117,7 @@ class UI {
       <div class="recipe-card">
               <div class="recipe-image">
                 <img
+                data-id=${recipe.id}
                   class="w-full h-[260px] object-cover"
                   src="${recipe.mealthumb}"
                   alt="Recipe 1"
@@ -125,7 +145,7 @@ class UI {
                   >
                     Add to Favorites
                   </button>
-                </div>
+             </div>
               </div>
             </div> 
     `;
@@ -144,9 +164,105 @@ class API {
     }
     UI.updateDOM(recipes);
   }
+
+  static async getRecipesByArea(area, num) {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?a=` + area
+    );
+    const data = await response.json();
+    for (let x of data.meals) {
+      const { recipe } = new Recipe(x);
+      suggestedRecipes.push(recipe);
+    }
+    UI.updateDOM2(suggestedRecipes);
+  }
+
+  static async getRecipesByCategory(category) {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?c=` + category
+    );
+    const data = await response.json();
+    for (let x of data.meals) {
+      const { recipe } = new Recipe(x);
+      recipes.push(recipe);
+    }
+    UI.updateDOM(recipes);
+  }
+
+  static getUserLocation() {
+    // Fetch user's location using ipapi.co
+    // Note: You may need to sign up for an API key if you exceed the free tier
+    // or if you want to use it in production.
+    // You can also use other services like ipinfo.io or ipgeolocation.io
+    fetch("https://ipapi.co/json/")
+      .then((response) => response.json())
+      .then((data) => {
+        const userCountry = data.country_name;
+        API.getRecipesByArea(
+          userCountry === "Cameroon" ? "Canadian" : userCountry
+        );
+      })
+      .catch((error) => {
+        console.error("Error fetching user country:", error);
+      });
+  }
+
+  static async getRecipesByName(name) {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=` + name
+    );
+    const data = await response.json();
+    for (let x of data.meals) {
+      const { recipe } = new Recipe(x);
+      recipes.push(recipe);
+    }
+    UI.updateDOM(recipes);
+  }
 }
 
 // load recipes
 window.addEventListener("DOMContentLoaded", () => {
   API.getRecipesByFirstLetter(randomLetter);
+  API.getUserLocation();
+});
+
+// event listener for enter key pressed
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    const searchValue = input.value;
+    const searchTypeValue = searchType.value;
+    if (searchValue) {
+      preLoader.classList.remove("hidden");
+      recipesContainer.innerHTML = "";
+      recipes = [];
+      if (searchTypeValue === "name") {
+        API.getRecipesByName(searchValue);
+      } else if (searchTypeValue === "First Letter") {
+        API.getRecipesByFirstLetter(searchValue);
+      } else if (searchTypeValue === "Category") {
+        API.getRecipesByCategory(searchValue);
+      } else {
+        API.getRecipesByArea(searchValue);
+      }
+    }
+  }
+});
+
+// event listener for search btn
+searchBtn.addEventListener("click", (e) => {
+  if (input.value !== "") {
+    const searchValue = input.value;
+    const searchTypeValue = searchType.value;
+    if (searchValue) {
+      preLoader.classList.remove("hidden");
+      recipesContainer.innerHTML = "";
+      recipes = [];
+      if (searchTypeValue === "name") {
+        API.getRecipesByName(searchValue);
+      }
+      if (searchTypeValue === "First Letter") {
+        API.getRecipesByFirstLetter(searchValue);
+      }
+    }
+  }
 });
