@@ -32,13 +32,11 @@ const searchCategories = document.querySelector("#search-categories");
 const searchAreas = document.querySelector("#search-areas");
 const recipesContainer = document.querySelector(".recipes-container");
 const loadMoreBtn = document.querySelector("#load-more-btn");
-const suggestionsContainer = document.querySelector(".suggestions-container");
 const preLoader = document.querySelector(".pre-loader");
 
 const pages = ["recipes", "favorites", "recipe"];
 const currentPage = [pages[0]];
 let recipes = [];
-let suggestedRecipes = [];
 const randomLetter = LETTERS[Math.floor(Math.random() * LETTERS.length)];
 
 class Recipe {
@@ -98,20 +96,6 @@ class UI {
     recipesContainer.innerHTML = recipesInDOM;
   }
 
-  // Change later - DRY
-  static updateDOM2(_recipes) {
-    let recipesInDOM = "";
-    let newRecipes = [..._recipes];
-    if (_recipes.length >= 5) {
-      newRecipes = _recipes.slice(0, 6);
-    }
-    newRecipes.forEach((recipe) => {
-      recipesInDOM += this.formatSuggestedRecipesDOM(recipe);
-    });
-    preLoader.classList.add("hidden");
-    suggestionsContainer.innerHTML = recipesInDOM;
-  }
-
   static formatRecipesDOM(recipe) {
     return `
       <div class="recipe-card">
@@ -125,12 +109,12 @@ class UI {
               </div>
               <div class="recipe-content mt-5">
                 <h2>
-                  <a class="recipe-title text-3xl font-Lora" href="#"
+                  <a class="recipe-title text-3xl line-clamp-1 font-Lora" href="#"
                     >S${recipe.meal}</a
                   >
                 </h2>
                 <p
-                  class="recipe-desc line-clamp-4 mt-4 text-LightGray text-justify"
+                  class="recipe-desc line-clamp-3 mt-4 text-LightGray"
                 >
                 ${recipe.instructions}
                 </p>
@@ -165,16 +149,17 @@ class API {
     UI.updateDOM(recipes);
   }
 
-  static async getRecipesByArea(area, num) {
+  static async getRecipesByArea(area) {
     const response = await fetch(
       `https://www.themealdb.com/api/json/v1/1/filter.php?a=` + area
     );
     const data = await response.json();
+    console.log(data);
     for (let x of data.meals) {
       const { recipe } = new Recipe(x);
-      suggestedRecipes.push(recipe);
+      recipes.push(recipe);
     }
-    UI.updateDOM2(suggestedRecipes);
+    UI.updateDOM(recipes);
   }
 
   static async getRecipesByCategory(category) {
@@ -187,24 +172,6 @@ class API {
       recipes.push(recipe);
     }
     UI.updateDOM(recipes);
-  }
-
-  static getUserLocation() {
-    // Fetch user's location using ipapi.co
-    // Note: You may need to sign up for an API key if you exceed the free tier
-    // or if you want to use it in production.
-    // You can also use other services like ipinfo.io or ipgeolocation.io
-    fetch("https://ipapi.co/json/")
-      .then((response) => response.json())
-      .then((data) => {
-        const userCountry = data.country_name;
-        API.getRecipesByArea(
-          userCountry === "Cameroon" ? "Canadian" : userCountry
-        );
-      })
-      .catch((error) => {
-        console.error("Error fetching user country:", error);
-      });
   }
 
   static async getRecipesByName(name) {
@@ -223,7 +190,6 @@ class API {
 // load recipes
 window.addEventListener("DOMContentLoaded", () => {
   API.getRecipesByFirstLetter(randomLetter);
-  API.getUserLocation();
 });
 
 // event listener for enter key pressed
@@ -262,6 +228,8 @@ searchBtn.addEventListener("click", (e) => {
       }
       if (searchTypeValue === "First Letter") {
         API.getRecipesByFirstLetter(searchValue);
+      } else {
+        API.getRecipesByArea(searchValue);
       }
     }
   }
